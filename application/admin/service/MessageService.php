@@ -45,6 +45,9 @@ class MessageService
         if(isset($data['imgs'])){
             $model->image = json_encode($data['imgs']);
         }
+        if(isset($data['enclosure'])){
+            $model->enclosure= json_encode($data['enclosure']);
+        }
         $model->pageview = $data['pageview'];
         $model->create_user = get_user_id();
 
@@ -68,6 +71,9 @@ class MessageService
         ];
         if(isset($data['imgs'])){
             $list['image'] = json_encode($data['imgs']);
+        }
+        if(isset($data['enclosure'])){
+            $list['enclosure'] = json_encode($data['enclosure']);
         }
         $res = Message::update($list, ['id' => $data['id']]);
         if ($res) {

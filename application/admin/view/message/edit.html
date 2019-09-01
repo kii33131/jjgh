@@ -84,7 +84,26 @@
     </div>
 
 
+    <div class="layui-form-item">
+        <div class="layui-upload">
+            <button type="button" class="layui-btn" id="test3">附件上传</button>
+            <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                附件：
+                <div class="layui-upload-list" id="demo3">
+                    {if isset($list.enclosure)}
+                    {foreach $list.enclosure as $key=>$vo }
+                    <div>
+                        <a href="__UPLOADS__/{$vo}" download="下载">附件{$key+1}</a>
+                        <i class="layui-icon layui-icon-close"></i>
+                        <input type="text" name="enclosure[]" class="none" style="display: none" value="{$vo}">
+                    </div>
+                    {/foreach}
+                    {/if}
+                </div>
 
+            </blockquote>
+        </div>
+    </div>
 
 
     <div class="layui-form-item">
@@ -202,6 +221,50 @@
             }
         });
         imgs_render();
+        function imgs_render(){
+            $('#demo2 .layui-upload-img').zoomify();
+            $('#demo2>div>.layui-icon-close').click(function () {
+                $(this).parent().remove()
+            });
+        }
+    });
+
+    layui.use('upload', function() {
+        var $ = layui.jquery
+            , upload = layui.upload;
+        var loadding_index = '';
+
+        //多图片上传
+        upload.render({
+            elem: '#test3'
+            ,url: '{:url("Message/upload")}'
+            ,multiple: true
+            ,exts:'ptf|xlsx|doc|zip|ppt'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    // $('#demo2').append('<img src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img">')
+                    loadding_index = layer.load();
+
+                });
+            }
+            ,done: function(res){
+                //上传完毕
+                layer.close(loadding_index);
+                if(res.errorCode== 0){
+                    let innerhtml = '<div>' +
+                        '<a href="__UPLOADS__/' + res.data.url + '" download="下载">' +'附件' + '<a>'+
+                        '<i class="layui-icon layui-icon-close"></i>' +
+                        '<input type="text" name="enclosure[]" class="none" style="display: none" value="' + res.data.url + '">' +
+                        '</div>';
+                    $('#demo3').append(innerhtml)
+                }else{
+                    layer.msg(res.msg);
+                }
+              //  imgs_render();
+            }
+        });
+        //imgs_render();
         function imgs_render(){
             $('#demo2 .layui-upload-img').zoomify();
             $('#demo2>div>.layui-icon-close').click(function () {

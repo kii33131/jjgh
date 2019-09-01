@@ -112,7 +112,9 @@ class Message extends Common
                 if($list['image']){
                     $list['image'] = json_decode($list['image']);
                 }
-                //var_dump($list);exit;
+                if($list['enclosure']){
+                    $list['enclosure'] = json_decode($list['enclosure']);
+                }
                 $category=$list['category'];
                 $this->assign('list', $list);
             }else{
