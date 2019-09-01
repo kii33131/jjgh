@@ -52,4 +52,17 @@ class Message extends Model
             });
     }
 
+
+    public function detail($data){
+        $result=self::get($data['id']);
+        if($result['image']){
+            $result['image'] =json_decode($result['image']);
+        }
+        if($result['enclosure']){
+            $result['enclosure'] =json_decode($result['enclosure']);
+        }
+
+        return $result;
+    }
+
 }

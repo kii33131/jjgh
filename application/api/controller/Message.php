@@ -15,5 +15,10 @@ class Message extends Base
         success($list);
     }
 
-    //public function
+    public function detail(){
+        $data = $this->data_arr;
+        $model = new \app\admin\model\Message();
+        $list=$model->detail($data);
+        success($list);
+    }
 }
