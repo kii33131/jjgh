@@ -67,6 +67,7 @@ class Message extends Common
             if(isset($channel) && $channel){
                 $where['channel'] = $channel;
             }
+            $where['status'] = 1;
             $list =MessageModel::where($where)->paginate($data['limit'], false, ['query' => $data]);
            // echo MessageModel::getlastsql();exit;
             $user_date = [];
@@ -99,16 +100,13 @@ class Message extends Common
                 return $res;
             } else {
                 //添加
-
-                //var_dump($data);exit;
                 $data = MessageService::add($data);
                 return $data;
             }
         } else {
-            $category=$_REQUEST['name'];
+            //$category=$_REQUEST['name'];
             //var_dump($_REQUEST);exit;
-            $channel_list=MessageService::channelList($category);
-            $this->assign('channel_list', $channel_list);
+
             $id = $this->request->get('id', 0, 'intval');
             if ($id) {
                 $list = MessageModel::where('id', '=', $id)->find();
@@ -116,9 +114,11 @@ class Message extends Common
                     $list['image'] = json_decode($list['image']);
                 }
                 //var_dump($list);exit;
+                $channel_list=MessageService::channelList($list['category'] );
+                $this->assign('channel_list', $channel_list);
                 $this->assign('list', $list);
             }
-            $this->assign('category', $category);
+            $this->assign('category', $list['category']);
             return $this->fetch();
         }
     }

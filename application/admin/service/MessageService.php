@@ -42,7 +42,9 @@ class MessageService
         $model->title = $data['title'];
         $model->content = $data['content'];
         unset($data['file']);
-        $model->image = json_encode($data['imgs']);
+        if(isset($data['imgs'])){
+            $model->image = json_encode($data['imgs']);
+        }
         $model->pageview = $data['pageview'];
         $model->create_user = get_user_id();
 
@@ -62,15 +64,11 @@ class MessageService
             'title' => $data['title'],
             'content' => $data['content'],
             'category' => $data['category'],
-
-            //'image' => $data['image'],
             'pageview' => $data['pageview'],
         ];
-
         if(isset($data['imgs'])){
             $list['image'] = json_encode($data['imgs']);
         }
-
         $res = Message::update($list, ['id' => $data['id']]);
         if ($res) {
             $msg = Result::success('编辑成功', url('/admin/messageList'));
