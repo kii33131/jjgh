@@ -93,7 +93,7 @@
                     {if isset($list.enclosure)}
                     {foreach $list.enclosure as $key=>$vo }
                     <div>
-                        <a href="__UPLOADS__/{$vo}" download="下载" class="aa">附件{$key+1}</a>
+                        <a href="__UPLOADS__/{$vo}" download="下载" class="aa">{$vo}</a>
                         <i class="layui-icon layui-icon-close"></i>
                         <input type="text" name="enclosure[]" class="none" style="display: none" value="{$vo}">
                     </div>
