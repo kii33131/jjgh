@@ -114,14 +114,12 @@ class Message extends Common
                 }
                 //var_dump($list);exit;
                 $category=$list['category'];
-
-                $channel_list=MessageService::channelList($list['category'] );
-                $this->assign('channel_list', $channel_list);
                 $this->assign('list', $list);
             }else{
                 $category=$_REQUEST['name'];
-
             }
+            $channel_list=MessageService::channelList($category);
+            $this->assign('channel_list', $channel_list);
             $this->assign('category',$category);
             return $this->fetch();
         }
