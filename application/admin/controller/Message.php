@@ -159,6 +159,7 @@ class Message extends Common
     public function upload(){
         //echo 'aaa';exit;
         $file = request()->file('file');
+
         $info = $file->move(config('upload_file'));
         if($info){
             return json([
