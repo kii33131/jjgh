@@ -253,7 +253,7 @@
                 layer.close(loadding_index);
                 if(res.errorCode== 0){
                     let innerhtml = '<div>' +
-                        '<a href="__UPLOADS__/' + res.data.url + '" download=下载 class="aa" >' +'附件' + '<a>'+
+                        '<a href="__UPLOADS__/' + res.data.url + '" download=下载 class="aa" >' +res.data.url + '</a>'+
                         '<i class="layui-icon layui-icon-close"></i>' +
                         '<input type="text" name="enclosure[]" class="none" style="display: none" value="' + res.data.url + '">' +
                         '</div>';
@@ -272,5 +272,8 @@
             });
         }
     });
+
+
+
 </script>
 {/block}

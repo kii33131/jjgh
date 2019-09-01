@@ -160,7 +160,7 @@ class Message extends Common
         //echo 'aaa';exit;
         $file = request()->file('file');
 
-        $info = $file->move(config('upload_file'));
+        $info = $file->move(config('upload_file'),false);
         if($info){
             return json([
                 'errorCode' => 0,
@@ -178,7 +178,7 @@ class Message extends Common
 
     public function uploads(){
         $file = request()->file('file');
-        $info = $file->move(config('upload_file_admin'));
+        $info = $file->move(config('upload_file_admin'),false);
         if($info){
             $data =[];
             //web_url
