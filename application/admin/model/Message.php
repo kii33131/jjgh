@@ -57,9 +57,13 @@ class Message extends Model
         $result=self::get($data['id']);
         if($result['image']){
             $result['image'] =json_decode($result['image']);
+        }else{
+            $result['image'] =[];
         }
         if($result['enclosure']){
             $result['enclosure'] =json_decode($result['enclosure']);
+        }else{
+            $result['enclosure'] =[];
         }
 
         return $result;
