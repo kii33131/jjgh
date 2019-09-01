@@ -104,7 +104,6 @@ class Message extends Common
                 return $data;
             }
         } else {
-            //$category=$_REQUEST['name'];
             //var_dump($_REQUEST);exit;
 
             $id = $this->request->get('id', 0, 'intval');
@@ -114,11 +113,16 @@ class Message extends Common
                     $list['image'] = json_decode($list['image']);
                 }
                 //var_dump($list);exit;
+                $category=$list['category'];
+
                 $channel_list=MessageService::channelList($list['category'] );
                 $this->assign('channel_list', $channel_list);
                 $this->assign('list', $list);
+            }else{
+                $category=$_REQUEST['name'];
+
             }
-            $this->assign('category', $list['category']);
+            $this->assign('category',$category);
             return $this->fetch();
         }
     }
