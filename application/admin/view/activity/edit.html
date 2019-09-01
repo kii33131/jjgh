@@ -1,0 +1,106 @@
+{extend name="base/base" /}
+{block name="main"}
+<form id="form" method="post" class="layui-form layui-form-pane" action="{:url('/admin/activityEdit')}">
+    <div class="layui-form-item">
+        <label class="layui-form-label">活动名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" class="layui-input"
+                   value="{:isset($list.name)?$list.name:''}" lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">开始时间</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input begin_time" name="begin_time" value="{:isset($list.begin_time)?$list.begin_time:''}" lay-verify="required"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">结束时间</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input end_time" name="end_time" value="{:isset($list.end_time)?$list.end_time:''}" lay-verify="required"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">联系人</label>
+        <div class="layui-input-block">
+            <input type="text" name="linkman" class="layui-input"
+                   value="{:isset($list.linkman)?$list.linkman:''}" lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">联系方式</label>
+        <div class="layui-input-block">
+            <input type="text" name="linkway" class="layui-input"
+                   value="{:isset($list.linkway)?$list.linkway:''}" lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">费用明细</label>
+        <div class="layui-input-block">
+            <textarea id="detail" name="detail" style="display: none;"></textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <input type="hidden" name="id" value="{:isset($list['id'])?$list['id']:''}">
+            <input type="hidden" name="__token__" id="token" value="{$Request.token}"/>
+            <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+{/block}
+{block name="script"}
+{css href="/form-select/formSelects-v4.css" /}
+<script>
+    layui.config({
+        base: '/form-select/' //此处路径请自行处理, 可以使用绝对路径
+    }).extend({
+        formSelects: 'formSelects-v4'
+    });
+    layui.use('layedit', function(){
+
+    });
+    layui.use(['form', 'laydate', 'jquery', 'formSelects','layedit'], function () {
+        var formSelects = layui.formSelects, form = layui.form, laydate = layui.laydate,$ = layui.jquery;
+        laydate.render({
+            elem: '.begin_time', //指定元素
+            type: 'datetime',
+        });
+        laydate.render({
+            elem: '.end_time', //指定元素
+            type: 'datetime',
+        });
+        var layedit = layui.layedit;
+        var index = layedit.build('detail'); //建立编辑器
+        layedit.sync(index);
+        //表单提交
+        form.on("submit(*)", function (data) {
+            data.field.detail=layedit.getContent(index);
+            var obj = $(this);
+            obj.attr("disabled", "disabled").addClass("layui-disabled");
+            $.post(data.form.action, data.field, function (data) {
+                //detail
+
+                var icon = 5;
+                if (data.code) {
+                    icon = 6;
+                }
+                layer.msg(data.msg, {icon: icon, time: 1500}, function () {   //提示的插件，可以使用alert代替
+                    if (data.code) {
+                        setTimeout(function () {
+                            //刷新父页面
+                            parent.location.reload();
+                        }, 500);
+                    } else {
+                        $('#token').val(data.data.token);
+                        obj.removeAttr("disabled").removeClass("layui-disabled");
+                    }
+                });
+            }, 'json');
+            return false;
+        });
+    });
+</script>
+{/block}

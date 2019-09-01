@@ -1,0 +1,158 @@
+{extend name="base/base" /}
+{block name="main"}
+<form class="layui-form">
+    <blockquote class="layui-elem-quote quoteBox">
+        <form class="layui-form">
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input searchVal" placeholder="请输入标题关键字" />
+                </div>
+                <div class="layui-input-inline">
+                    <div class="layui-input-block">
+                        <select name="channel" class="channel">
+                            <option value="">请选择发布渠道</option>
+                            {volist name="channel_list" id="vo"}
+                            <option value="{$vo}">{$vo}</option>
+                            {/volist}
+                        </select>
+                    </div>
+                </div>
+                <a class="layui-btn search_btn" data-type="reload">搜索</a>
+            </div>
+            <div class="layui-inline">
+                <a class="layui-btn layui-btn-danger layui-btn-normal add_btn">发布信息</a>
+            </div>
+        </form>
+    </blockquote>
+    <table id="List" lay-filter="List"></table>
+    <!--操作-->
+    <script type="text/html" id="ListBar">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+    </script>
+</form>
+{/block}
+{block name="script"}
+<script>
+    layui.use(['form','layer','table'],function(){
+        var form = layui.form,
+            layer = parent.layer === undefined ? layui.layer : top.layer,
+            $ = layui.jquery, table = layui.table;
+
+        //信息列表
+        var tableIns = table.render({
+            elem: '#List',
+            url : "{:url('/admin/messageList',['name'=>$name])}",
+            cellMinWidth : 95,
+            page : true,
+            limit:10,
+           // name:'{$name}',
+            limits:[5,10,15,20],
+            height : "full-125",
+            id:'ListTable',
+            //where:"{'name':$name}",
+            cols : [[
+                {field: 'title', title: '标题', width:350},
+                {field: 'channel', title: '发布渠道', align:'center'},
+                {field: 'pageview', title: '阅读数量',  align:'center'},
+                {field: 'user', title: '发布人', align:'center'},
+                {field: 'create_time', title: '发布时间', align:'center'},
+                {title: '操作', width:170, templet:'#ListBar',fixed:"right",align:"center"}
+            ]]
+        });
+        table.reload("ListTable",{
+
+            where: {
+                name:'{$name}'
+                //搜索的关键字
+            }
+        })
+
+        //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
+        $(".search_btn").on("click",function(){
+            table.reload("ListTable",{
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                },
+                where: {
+                    key: $(".searchVal").val(),
+                    channel:$(".channel").val()
+                    //搜索的关键字
+                }
+            })
+        });
+
+        //发布信息
+        function add(){
+            var index = layui.layer.open({
+                title : "发布信息",
+                type : 2,
+                content : "{:url('/admin/messageEdit')}"+'?name='+'{$name}',
+                success : function(layero, index){
+                    var body = layui.layer.getChildFrame('body', index);
+                    setTimeout(function(){
+                        layui.layer.tips('点击此处返回列表', '.layui-layer-setwin .layui-layer-close', {
+                            tips: 3
+                        });
+                    },500)
+                }
+            })
+            layui.layer.full(index);
+            window.sessionStorage.setItem("index",index);
+            //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+            $(window).on("resize",function(){
+                layui.layer.full(window.sessionStorage.getItem("index"));
+            })
+        }
+        //编辑信息
+        function edit(id){
+            var index = layui.layer.open({
+                title : "编辑信息",
+                type : 2,
+                content : "{:url('/admin/messageEdit')}"+'?id='+id,
+                success : function(layero, index){
+                    var body = layui.layer.getChildFrame('body', index);
+                    setTimeout(function(){
+                        layui.layer.tips('点击此处返回列表', '.layui-layer-setwin .layui-layer-close', {
+                            tips: 3
+                        });
+                    },500)
+                }
+            })
+            layui.layer.full(index);
+            window.sessionStorage.setItem("index",index);
+            //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+            $(window).on("resize",function(){
+                layui.layer.full(window.sessionStorage.getItem("index"));
+            })
+        }
+
+        $(".add_btn").click(function(){
+            add();
+        })
+
+        //列表操作
+        table.on('tool(List)', function(obj){
+            var layEvent = obj.event, data = obj.data;
+            if(layEvent === 'edit'){ //编辑
+                edit(data.id);
+            } else if(layEvent === 'del'){ //删除
+                layer.confirm('确定删除操作？',{icon:3, title:'提示信息'},function(index){
+                    $.post("{:url('/admin/messageDelete')}",{id:data.id},function(data){
+                        var icon=5;
+                        if(data.code){
+                            icon=6;
+                        }
+                        layer.msg(data.msg, {icon:icon,time: 1500}, function () {
+                            if(data.code){
+                                obj.del();
+                            }
+                        });
+                    })
+                });
+            }
+        });
+
+    })
+</script>
+{/block}

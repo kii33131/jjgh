@@ -1,0 +1,210 @@
+{extend name="base/base" /}
+{block name="css"}
+
+<style>
+    .none{
+        display: none;
+    }
+    #demo2>div{
+        position: relative;
+        display: inline-block;
+        margin: 5px;
+    }
+    #demo2>div>img{
+        height: 100px;
+    }
+    #demo2>div>.layui-icon-close{
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        right: 0;
+        color: #fff;
+        font-weight: 800;
+    }
+    .layui-disabled{
+        color: #676767!important;
+    }
+</style>
+{/block}
+
+{block name="main"}
+<script type="text/javascript" src="__JSi__/jquery.min.js"></script>
+<link href="__PLUGINS__/js/layui/css/layui.css" rel="stylesheet">
+<link href="__PLUGINS__/js/zoomify/zoomify.min.css" rel="stylesheet">
+<form id="form" method="post" class="layui-form layui-form-pane" action="{:url('/admin/messageEdit')}">
+    <div class="layui-form-item">
+        <label class="layui-form-label">发布渠道</label>
+        <div class="layui-input-block">
+            <select name="channel" lay-verify="required">
+                <option value="">请选择发布渠道</option>
+                {volist name="channel_list" id="vo"}
+                <option value="{$vo}"  {if  isset($list.channel) && $list.channel==$vo} selected {/if} >{$vo}</option>
+                {/volist}
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" class="layui-input"
+                   value="{:isset($list.title)?$list.title:''}" lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">内容</label>
+        <div class="layui-input-block">
+            <textarea id="content"  name="content"  class="layui-textarea fly-editor" >{:isset($list.content)?$list.content:''}</textarea>
+        </div>
+    </div>
+
+    <input type="hidden" name="category" value="{$category}">
+    <div class="layui-form-item">
+        <div class="layui-upload">
+            <button type="button" class="layui-btn" id="test2">图片上传</button>
+            <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                预览图：
+                <div class="layui-upload-list" id="demo2">
+
+                    {if isset($list.image)}
+
+                    {foreach $list.image as $key=>$vo }
+                    <div>
+                        <img src="__UPLOADS__/{$vo}" class="layui-upload-img">
+                        <i class="layui-icon layui-icon-close"></i>
+                        <input type="text" name="imgs[]" class="none" style="display: none" value="{$vo}">
+                    </div>
+                    {/foreach}
+                    {/if}
+                </div>
+
+
+
+            </blockquote>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">阅读数量</label>
+        <div class="layui-input-block">
+            <input type="text" name="pageview" class="layui-input"
+                   value="{:isset($list.pageview)?$list.pageview:''}" >
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">发布时间</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input create_time" name="create_time" value="{:isset($list.create_time)?$list.create_time:''}" lay-verify="required"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <input type="hidden" name="id" value="{:isset($list['id'])?$list['id']:''}">
+            <input type="hidden" name="__token__" id="token" value="{$Request.token}"/>
+            <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+
+</form>
+{/block}
+{block name="script"}
+{css href="/form-select/formSelects-v4.css" /}
+<script type="text/javascript" src="__PLUGINS__/js/zoomify/zoomify.min.js"></script>
+
+
+<script>
+    layui.config({
+        base: '/form-select/' //此处路径请自行处理, 可以使用绝对路径
+    }).extend({
+        formSelects: 'formSelects-v4'
+    });
+    layui.use(['form', 'jquery', 'formSelects', 'laydate','layedit'], function () {
+        var formSelects = layui.formSelects, form = layui.form, $ = layui.jquery, laydate = layui.laydate;
+        var layedit = layui.layedit;
+        laydate.render({
+            elem: '.create_time', //指定元素
+            type: 'datetime',
+        });
+
+        layedit.set({
+            uploadImage: {
+                url: '{:url("Message/uploads")}' //接口url
+                , type: 'post' //默认post
+            }
+        });
+
+        layedit.build('content'); //建立编辑器
+        var  index = layedit.build('content',{tool: ['strong', 'italic','underline','del','|','left','center','right','|','link','unlink','face','image','|','code']})
+        //layedit.getContent(index)
+        //表单提交
+
+        form.on("submit(*)", function (data) {
+            var obj = $(this);
+            data.field.content=layedit.getContent(index)
+            $.post(data.form.action, data.field, function (data) {
+                var icon = 5;
+                if (data.code) {
+                    icon = 6;
+                }
+                layer.msg(data.msg, {icon: icon, time: 1500}, function () {   //提示的插件，可以使用alert代替
+                    if (data.code) {
+                       setTimeout(function () {
+                            //刷新父页面
+                            parent.location.reload();
+                        }, 500);
+                    } else {
+                        $('#token').val(data.data.token);
+                        obj.removeAttr("disabled").removeClass("layui-disabled");
+                    }
+                });
+            }, 'json');
+            return false;
+        });
+    });
+
+
+    layui.use('upload', function() {
+        var $ = layui.jquery
+            , upload = layui.upload;
+        var loadding_index = '';
+
+        //多图片上传
+        upload.render({
+             elem: '#test2'
+            ,url: '{:url("Message/upload")}'
+            ,multiple: true
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                   // $('#demo2').append('<img src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img">')
+                    loadding_index = layer.load();
+
+                });
+            }
+            ,done: function(res){
+                //上传完毕
+                layer.close(loadding_index);
+                if(res.errorCode== 0){
+                    let innerhtml = '<div>' +
+                        '<img src="__UPLOADS__/' + res.data.url + '" class="layui-upload-img">' +
+                        '<i class="layui-icon layui-icon-close"></i>' +
+                        '<input type="text" name="imgs[]" class="none" style="display: none" value="' + res.data.url + '">' +
+                        '</div>';
+                    $('#demo2').append(innerhtml)
+                }else{
+                    layer.msg(res.msg);
+                }
+                imgs_render();
+            }
+        });
+        imgs_render();
+        function imgs_render(){
+            $('#demo2 .layui-upload-img').zoomify();
+            $('#demo2>div>.layui-icon-close').click(function () {
+                $(this).parent().remove()
+            });
+        }
+    });
+</script>
+{/block}
