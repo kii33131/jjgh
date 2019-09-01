@@ -199,7 +199,7 @@ function download_excel($data, $header = [], $filename = 'output.xlsx')
  */
 function success($data = []){
 
-    echo json_encode(['errorCode'=>0,'data'=>$data],JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+    echo json_encode(['errorCode'=>0,'data'=>$data],JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);exit;
 }
 
 /**
@@ -210,7 +210,7 @@ function success($data = []){
  * @throws \app\exceptions\ApiException
  */
 function error($msg,$errorCode,$code = 200){
-    echo json_encode(['errorCode'=>$errorCode,'msg'=>$msg,'code'=>$code],JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+    echo json_encode(['errorCode'=>$errorCode,'msg'=>$msg,'code'=>$code],JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);exit;
 
 }
 
