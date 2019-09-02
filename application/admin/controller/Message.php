@@ -33,7 +33,7 @@ class Message extends Common
                 'limit' => $this->request->get('limit', 10, 'intval'),
             ];
 
-            $list = Initiation::withSearch(['name'], ['name' => $data['key']])
+            $list = Initiation::withSearch(['name'], ['name' => $data['key']])->order('id desc')
                 ->paginate($data['limit'], false, ['query' => $data]);
             $user_date = [];
             foreach ($list as $key => $val) {
@@ -68,7 +68,7 @@ class Message extends Common
                 $where['channel'] = $channel;
             }
             $where['status'] = 1;
-            $list =MessageModel::where($where)->paginate($data['limit'], false, ['query' => $data]);
+            $list =MessageModel::where($where)->order('id desc')->paginate($data['limit'], false, ['query' => $data]);
            // echo MessageModel::getlastsql();exit;
             $user_date = [];
             foreach ($list as $key => $val) {
