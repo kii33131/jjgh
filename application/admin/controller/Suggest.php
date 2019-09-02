@@ -20,7 +20,7 @@ class Suggest extends Common
                 'key' => $this->request->get('key', '', 'trim'),
                 'limit' => $this->request->get('limit', 10, 'intval'),
             ];
-            $list = SuggestModel::withSearch(['name'], ['name' => $data['key']])
+            $list = SuggestModel::withSearch(['name'], ['name' => $data['key']])->order('id desc')
                 ->paginate($data['limit'], false, ['query' => $data]);
             $table = [];
             foreach ($list as $key => $val) {
