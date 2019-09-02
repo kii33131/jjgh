@@ -38,15 +38,8 @@
                 {field: 'nation', title: '名族',  align:'center'},
                 {field: 'birthday', title: '出生日期', align:'center'},
                 {field: 'card_number', title: '身份证号码', align:'center'},
-                {field: 'job_status', title: '就业状态', align:'center', templet: function (d) {
-                        if (d.job_status == 1) {
-                            return '就业中'
-                        } else {
-                            return '失业中'
-                        }
-                    }
-                },
-                {field: 'create_time', title: '申请时间', align:'center'},
+                {field: 'job_status', title: '就业状态', align:'center'},
+                {field: 'created_at', title: '申请时间', align:'center'},
             ]]
         });
 
