@@ -138,8 +138,9 @@ return [
     'upload_file'           => env('root_path') . 'public/assets/uploads/',
     'upload_file_admin'           => env('root_path') . 'public/assets/uploads/',
 
-    'web_url' =>'http://jjgh.dev.0797i.cn',
-
+    //'web_url' =>'http://jjgh.dev.0797i.cn',
+    'web_url' =>'http://test3.intelgice.com',
+    //http://test3.intelgice.com
     // 错误显示信息,非调试模式有效
     'error_message'          => '页面错误！请稍后再试～',
     // 显示错误信息
