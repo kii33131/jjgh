@@ -28,9 +28,11 @@ Route::group('admin', [
     'message/uploads'=>'admin/Message/uploads',                                    //发布、编辑信息
     'initiationList'=>'admin/Message/initiationList',                       //入会申请信息
     'messageEdit$'=>'admin/Message/edit',                                    //发布、编辑信息
+    'bannerEdit$'=>'admin/Banner/edit',                                    //发布、编辑轮播图
 
-    'messageEdit$'=>'admin/Message/edit',                                    //发布、编辑信息
+//    'messageEdit$'=>'admin/Message/edit',                                    //发布、编辑信息
     'messageList'=>'admin/Message/messageList',
+    'bannerList'=>'admin/Banner/bannerList',
 
 
 //uploads
@@ -72,6 +74,7 @@ Route::group('admin', [
     //'initiationList/:id'=>'admin/Message/initiationList',                       //入会申请信息
     'down_initiation'=>'admin/Message/down',
     'messageDelete$'=>'admin/Message/delete',                                //删除信息
+    'bannerDelete$'=>'admin/Banner/delete',                                //删除轮播图
 
 
     //'messageList'=>'admin/Message/messageList',
