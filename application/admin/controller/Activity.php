@@ -20,12 +20,14 @@ class Activity extends Common
                 'limit' => $this->request->get('limit', 10, 'intval'),
             ];
             $list = ActivityModel::withSearch(['name'], ['name' => $data['key']])
+                ->where('status',1)
                 ->paginate($data['limit'], false, ['query' => $data]);
             $table = [];
             foreach ($list as $key => $val) {
                 $table[$key] = $val;
                 $table[$key]['user'] = $val->user;
             }
+//            dump($table);die;
             return show($table, 0, '', ['count' => $list->total()]);
         }
         return $this->fetch();

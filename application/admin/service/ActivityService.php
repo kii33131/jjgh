@@ -23,9 +23,11 @@ class ActivityService
         $model->name = $data['name'];
         $model->begin_time = strtotime($data['begin_time']);
         $model->end_time = strtotime($data['end_time']);
+        $model->detail_time = $data['detail_time'];
         $model->linkman = $data['linkman'];
         $model->linkway = $data['linkway'];
         $model->detail = $data['detail'];
+        $model->desc = $data['desc'];
         $model->create_user = get_user_id();
         $model->create_time = time();
 
@@ -44,9 +46,11 @@ class ActivityService
             'name' => $data['name'],
             'begin_time' => strtotime($data['begin_time']),
             'end_time' => strtotime($data['end_time']),
+            'detail_time' => $data['detail_time'],
             'linkman' => $data['linkman'],
             'linkway' => $data['linkway'],
             'detail' => $data['detail'],
+            'desc' => $data['desc'],
         ];
 
         $res = Activity::update($list, ['id' => $data['id']]);
@@ -63,7 +67,7 @@ class ActivityService
         if (!$id) {
             return Result::error('参数错误');
         }
-        $res = Activity::destroy($id);
+        $res = Activity::update(['status' => 0], ['id' => $id]);
         if ($res) {
             $msg = Result::success('删除成功');
         } else {
