@@ -200,7 +200,7 @@ class Message extends Common
         $info = $file->move(config('upload_file'),false);
         if($info){
 //            、、{ location : "/demo/image/1.jpg" }
-            return json_encode(['location' => config('web_url').'/assets/uploads/'.$info->getSaveName()]);
+            return json_encode(['location' => $info->getSaveName()]);
         }else{
             return json([
                 'errorCode' => 10001,
