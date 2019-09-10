@@ -93,7 +93,7 @@
             <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
                 附件：
                 <div class="layui-upload-list" id="demo3">
-                    {if isset($list.enclosure)}
+                    {if !empty($list.enclosure)}
                     {foreach $list.enclosure as $key=>$vo }
                     <div>
                         <a href="__UPLOADS__/{$vo}" download="下载" class="aa">{$vo}</a>
@@ -158,7 +158,7 @@
             { title: 'Some class', value: 'class-name' }
         ],
         importcss_append: true,
-       
+
         //为内容模板插件提供预置模板
         templates: [
             { title: '模板1', description: '介绍文字1', content: '模板内容' },
@@ -200,6 +200,8 @@
         // var $editor = $('#editor').editor();
         form.on("submit(*)", function (data) {
             var obj = $(this);
+            data.field.content = tinymce.activeEditor.getContent();
+            // console.log(tinymce.activeEditor.getContent());
             $.post(data.form.action, data.field, function (data) {
                 var icon = 5;
                 if (data.code) {
@@ -209,8 +211,8 @@
                     if (data.code) {
                        setTimeout(function () {
                             //刷新父页面
-                            parent.location.reload();
-                        }, 500);
+                           parent.location.reload()
+                       }, 500);
                     } else {
                         $('#token').val(data.data.token);
                         obj.removeAttr("disabled").removeClass("layui-disabled");

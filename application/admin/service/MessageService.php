@@ -77,6 +77,8 @@ class MessageService
         }
         if(isset($data['enclosure'])){
             $list['enclosure'] = json_encode($data['enclosure']);
+        }else{
+            $list['enclosure'] = '';
         }
         $res = Message::update($list, ['id' => $data['id']]);
         if ($res) {
