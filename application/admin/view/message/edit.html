@@ -166,18 +166,7 @@
             { title: 'Some class', value: 'class-name' }
         ],
         importcss_append: true,
-        //自定义文件选择器的回调内容
-        file_picker_callback: function (callback, value, meta) {
-            if (meta.filetype === 'file') {
-                callback('https://www.baidu.com/img/bd_logo1.png', { text: 'My text' });
-            }
-            if (meta.filetype === 'image') {
-                callback('https://www.baidu.com/img/bd_logo1.png', { alt: 'My alt text' });
-            }
-            if (meta.filetype === 'media') {
-                callback('movie.mp4', { source2: 'alt.ogg', poster: 'https://www.baidu.com/img/bd_logo1.png' });
-            }
-        },
+       
         //为内容模板插件提供预置模板
         templates: [
             { title: '模板1', description: '介绍文字1', content: '模板内容' },
