@@ -24,6 +24,9 @@
     .layui-disabled{
         color: #676767!important;
     }
+    .edui-container{
+        z-index: 0!important;
+    }
 </style>
 {/block}
 
@@ -53,8 +56,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">内容</label>
         <div class="layui-input-block">
-
-            <textarea id="editor" style="width:1024px;height:300px;"  name="content"  class="sui-editor" >{:isset($list.content)?$list.content:''}</textarea>
+            <textarea id="sui-editor" style="width:1024px;height:300px; z-index: 1;"  name="content"  class="layui-textarea sui-editor" >{:isset($list.content)?$list.content:''}</textarea>
         </div>
     </div>
 
