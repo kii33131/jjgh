@@ -192,4 +192,20 @@ class Message extends Common
             ]);
         }
     }
+
+    public function newUpload(){
+        //echo 'aaa';exit;
+        $file = request()->file('file');
+
+        $info = $file->move(config('upload_file'),false);
+        if($info){
+//            、、{ location : "/demo/image/1.jpg" }
+            return json_encode(['location' => $info->getSaveName()]);
+        }else{
+            return json([
+                'errorCode' => 10001,
+                'msg' => '上传图片失败'
+            ]);
+        }
+    }
 }

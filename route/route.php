@@ -26,6 +26,7 @@ Route::group('admin', [
     'verify'=>'admin/Login/verify',                                        //获取验证码
     'message/upload$'=>'admin/Message/upload',                                    //发布、编辑信息
     'message/uploads'=>'admin/Message/uploads',                                    //发布、编辑信息
+    'message/newUpload'=>'admin/Message/newUpload',                                    //新版上传
     'initiationList'=>'admin/Message/initiationList',                       //入会申请信息
     'messageEdit$'=>'admin/Message/edit',                                    //发布、编辑信息
     'bannerEdit$'=>'admin/Banner/edit',                                    //发布、编辑轮播图
