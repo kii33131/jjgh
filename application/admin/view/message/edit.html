@@ -187,8 +187,7 @@
         template_cdate_format: '[CDATE: %m/%d/%Y : %H:%M:%S]',
         template_mdate_format: '[MDATE: %m/%d/%Y : %H:%M:%S]',
         image_caption: true,
-        images_upload_url: '{:url("Message/newUpload")}',
-        images_upload_base_path: '{:config("web_url")."/assets/uploads/"}',
+        images_upload_url: '{:url("Message/newUpload")}'
     });
 </script>
 <script>
@@ -217,10 +216,9 @@
         //layedit.getContent(index)
         //表单提交
             //实例化编辑器
-        var $editor = $('#editor').editor();
+        // var $editor = $('#editor').editor();
         form.on("submit(*)", function (data) {
             var obj = $(this);
-            data.field.content=$editor.editor('getContent')
             $.post(data.form.action, data.field, function (data) {
                 var icon = 5;
                 if (data.code) {
