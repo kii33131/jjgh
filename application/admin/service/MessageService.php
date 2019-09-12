@@ -74,6 +74,8 @@ class MessageService
         ];
         if(isset($data['imgs'])){
             $list['image'] = json_encode($data['imgs']);
+        }else{
+            $list['image'] = '';
         }
         if(isset($data['enclosure'])){
             $list['enclosure'] = json_encode($data['enclosure']);
