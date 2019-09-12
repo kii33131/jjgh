@@ -31,6 +31,11 @@ class ActivityService
         $model->desc = $data['desc'];
         $model->create_user = get_user_id();
         $model->create_time = time();
+        if(isset($data['enclosure'])){
+            $model->enclosure = json_encode($data['enclosure']);
+        }else{
+            $model->enclosure = '';
+        }
 
         $res = $model->save();
         if ($res) {
@@ -54,6 +59,11 @@ class ActivityService
             'detail' => $data['detail'],
             'desc' => $data['desc'],
         ];
+        if(isset($data['enclosure'])){
+            $list['enclosure'] = json_encode($data['enclosure']);
+        }else{
+            $list['enclosure'] = '';
+        }
 
         $res = Activity::update($list, ['id' => $data['id']]);
         if ($res) {

@@ -27,7 +27,6 @@ class Activity extends Common
                 $table[$key] = $val;
                 $table[$key]['user'] = $val->user;
             }
-//            dump($table);die;
             return show($table, 0, '', ['count' => $list->total()]);
         }
         return $this->fetch();
@@ -50,6 +49,12 @@ class Activity extends Common
             $id = $this->request->get('id', 0, 'intval');
             if ($id) {
                 $list = ActivityModel::where('id', '=', $id)->find();
+                if(!empty($list['image'])){
+                    $list['image'] = json_decode($list['image']);
+                }
+                if(!empty($list['enclosure'])){
+                    $list['enclosure'] = json_decode($list['enclosure']);
+                }
                 $this->assign('list', $list);
             }
             return $this->fetch();
