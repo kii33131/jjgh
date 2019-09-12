@@ -68,7 +68,7 @@
                 预览图：
                 <div class="layui-upload-list" id="demo2">
 
-                    {if isset($list.image)}
+                    {if !empty($list.image)}
 
                     {foreach $list.image as $key=>$vo }
                     <div>

@@ -35,6 +35,13 @@
         </div>
     </div>
     <div class="layui-form-item">
+        <label class="layui-form-label">活动地址</label>
+        <div class="layui-input-block">
+            <input type="text" name="address" class="layui-input"
+                   value="{:isset($list.address)?$list.address:''}" lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item">
         <label class="layui-form-label">联系人</label>
         <div class="layui-input-block">
             <input type="text" name="linkman" class="layui-input"

@@ -23,6 +23,7 @@ class ActivityService
         $model->name = $data['name'];
         $model->begin_time = strtotime($data['begin_time']);
         $model->end_time = strtotime($data['end_time']);
+        $model->address = $data['address'];
         $model->detail_time = $data['detail_time'];
         $model->linkman = $data['linkman'];
         $model->linkway = $data['linkway'];
@@ -46,6 +47,7 @@ class ActivityService
             'name' => $data['name'],
             'begin_time' => strtotime($data['begin_time']),
             'end_time' => strtotime($data['end_time']),
+            'address' => $data['address'],
             'detail_time' => $data['detail_time'],
             'linkman' => $data['linkman'],
             'linkway' => $data['linkway'],
