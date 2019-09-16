@@ -60,7 +60,7 @@ class ActivityService
             'desc' => $data['desc'],
         ];
         if(isset($data['enclosure'])){
-            $list['enclosure'] = json_encode($data['enclosure']);
+                $list['enclosure'] = json_encode($data['enclosure']);
         }else{
             $list['enclosure'] = '';
         }

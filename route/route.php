@@ -34,6 +34,7 @@ Route::group('admin', [
 //    'messageEdit$'=>'admin/Message/edit',                                    //发布、编辑信息
     'messageList'=>'admin/Message/messageList',
     'bannerList'=>'admin/Banner/bannerList',
+    'member'=>'admin/Member/memberList',                                    // 用户信息
 
 
 //uploads
